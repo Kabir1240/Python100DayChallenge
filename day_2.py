@@ -9,7 +9,7 @@ def tip_calculator():
 
     # calculations
     total_bill = round((total_bill * (1 + (tip_amount/100))) / n_people, 2)
-    print("Each person should pay: $" + str(total_bill))
+    print(f"Each person should pay: ${total_bill}")
 
 
 tip_calculator()
