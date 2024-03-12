@@ -56,5 +56,4 @@ def hangman():
                     print("You Won!")
                     game_over = True
 
-
 hangman()

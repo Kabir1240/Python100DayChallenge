@@ -4,9 +4,3 @@ def band_name_generator():
     pet_name = input("What's your pet's name?\n")
     band_name = city_name + " "  + pet_name
     print("Your band name could be " + band_name)
-
-
-# Press the green button in the gutter to run the script.
-if __name__ == '__main__':
-    band_name_generator()
-
