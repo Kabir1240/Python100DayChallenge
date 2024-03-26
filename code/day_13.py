@@ -18,7 +18,7 @@ def higher_lower():
         personalities = select_random_personalities(data_length=data_len)
 
         # display game
-        higher_lower_new_display(personalities=personalities)
+        higher_lower_display(personality_a=personalities[0], personality_b=personalities[1])
 
         # ask user to guess between A or B having higher follower count
         follower_count_a = personalities[0]["follower_count"]
@@ -42,26 +42,21 @@ def higher_lower():
     return
 
 
-def higher_lower_new_display(personalities):
+def higher_lower_display(personality_a, personality_b):
     """
     prints out the logo and the two random personalities for the higher lower game module
-    :param personalities: a list of length 2, with 2 dictionaries, each containing one instagram personality
+    :param personality_a: first personality
+    :param personality_b: second personality
     :return: None
     """
+
     print(logo)
-
-    for i in range(2):
-        name = personalities[i]["name"]
-        description = personalities[i]["description"]
-        country = personalities[i]["country"]
-
-        if i == 0:
-            print(f"Compare A: {name}, a {description}, from {country}.")
-            print(vs)
-        elif i == 1:
-            print(f"Against B: {name}, a {description}, from {country}.")
+    print(f"Compare A: {format_data(personality_a)}")
+    print(vs)
+    print(f"Against B: {format_data(personality_b)}")
 
     return
+
 
 def select_random_personalities(data_length:int):
     """
@@ -72,6 +67,7 @@ def select_random_personalities(data_length:int):
 
     personality_a_index = random.randint(0, data_length - 1)
     personality_b_index = random.randint(0, data_length - 1)
+    # make sure we don't get the same celebrity twice
     while personality_a_index == personality_b_index:
         personality_b_index = random.randint(0, data_length - 1)
 
@@ -92,12 +88,17 @@ def ask_comparison(follower_count_a: int, follower_count_b: int) -> bool:
     while guess.lower() not in ['a', 'b']:
         guess = input("Enter either 'A' or 'B'")
 
-    if guess.lower() == 'a' and follower_count_a > follower_count_b:
-        return True
-    elif guess.lower() == 'b' and follower_count_b > follower_count_a:
-        return True
+    if follower_count_a > follower_count_b:
+        return guess.lower() == 'a'
     else:
-        return False
+        return guess.lower() == 'b'
 
+
+def format_data(personality):
+    name = personality["name"]
+    description = personality["description"]
+    country = personality["country"]
+
+    return f"{name}, a {description}, from {country}."
 
 higher_lower()
