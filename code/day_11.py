@@ -4,6 +4,11 @@ import random
 
 
 def blackjack():
+    """
+    Main functionality of blackjack game. Runs in terminal.
+    :return: None
+    """
+
     print(blackjack_logo)
     print("Welcome to Blackjack! (double, split and insure pending)")
 
@@ -33,6 +38,8 @@ def blackjack():
         print("Your Hand: ")
         display_score(players_cards)
         display_second_card_only(cpu_cards)
+
+        #TODO edge case when first 2 cards are both aces. Score = 22.
 
         # implement blackjack mechanic
         if players_cards["score"] == 21:
@@ -109,6 +116,11 @@ def blackjack():
 
 
 def ask_hit_or_stand() -> bool:
+    """
+    Part of the blackjack game. Asks user if they want to hit or stand.
+    :return: Returns True if hit and False if stand
+    """
+
     hit_inputs = ['hit', 'h', 'stand', 's']
     # ask to hit or stand
     hit = input("type 'hit' or 'h' to hit and 'stand' or 's' to stand")
@@ -127,6 +139,12 @@ def ask_hit_or_stand() -> bool:
 
 
 def display_score(card_dictionary):
+    """
+    Takes a dictionary of player cards, prints out the cards within as well as the total score
+    :param card_dictionary: dictionary of player cards
+    :return: None
+    """
+
     for i in card_dictionary["cards"]:
         print(i)
     player_current_score = card_dictionary["score"]
@@ -134,6 +152,12 @@ def display_score(card_dictionary):
 
 
 def pick_random_card(card_dictionary):
+    """
+    Picks a random card, updates the card and total score in card_dictionary
+    :param card_dictionary: dictionary of player cards
+    :return: None
+    """
+
     #TODO remove option to pick suit entirely if all cards have been drawn
     # end game if all cards are finished
 
@@ -153,6 +177,13 @@ def pick_random_card(card_dictionary):
 
 
 def display_second_card_only(card_dictionary):
+    """
+    Used for when dealer only wishes to show the second card and only the score associated with that. Prints out the
+    second cards name and score.
+    :param card_dictionary: dictionary of player cards
+    :return: None
+    """
+
     print("\nDealer's Hand: ")
     second_card = card_dictionary["cards"][1].split()[0]
     score = card_scores[second_card]
@@ -161,6 +192,13 @@ def display_second_card_only(card_dictionary):
 
 
 def reset_cards(players_deck, cpu_deck):
+    """
+    Resets players and cpu cards deck at the end of the blackjack round
+    :param players_deck: players card deck dictionary
+    :param cpu_deck: dealer's card deck dictionary
+    :return: None
+    """
+
     players_deck["score"] = 0
     players_deck["cards"] = []
     players_deck["aces"] = 0
