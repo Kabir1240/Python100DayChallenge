@@ -42,27 +42,15 @@ def blackjack():
         #TODO edge case when first 2 cards are both aces. Score = 22.
 
         # implement blackjack mechanic
-        if players_cards["score"] == 21:
-            print("\nDealer's Hand: ")
-            display_score(cpu_cards)
-            print()
+        player_score = players_cards["score"]
+        cpu_score = cpu_cards["score"]
+        if player_score == 21 or cpu_score == 21:
+            if player_score == 21:
+                player_score = 0
+            if cpu_score == 21:
+                cpu_score = 0
 
-            if cpu_cards["score"] != 21:
-                print("BLACKJACK! You Win!")
-                total_amount += 1.5*bet
-            elif cpu_cards["score"] == 21:
-                print("DRAW!")
-            reset_cards(players_cards, cpu_cards)
-            print(f"remaining pot: ${total_amount}")
-
-        # if dealer gets blackjack
-        elif cpu_cards["score"] == 21:
-            print("\nDealer's Hand: ")
-            display_score(cpu_cards)
-            print("\nDealer Wins!")
-            total_amount -= bet
-            reset_cards(players_cards, cpu_cards)
-            print(f"remaining pot: ${total_amount}")
+            calculate_score(player_score, cpu_score, total_amount, bet, True)
         else:
             hit = ask_hit_or_stand()
             while players_cards["score"] < 21 and hit:
@@ -72,8 +60,6 @@ def blackjack():
                         players_cards["aces"] -= 1
                         players_cards["score"] -= 10
                     else:
-                        print("BUST! Dealer Wins")
-                        total_amount -= bet
                         break
 
                 print("\nYour Hand: ")
@@ -89,30 +75,9 @@ def blackjack():
             while cpu_cards["score"] < 17:
                 pick_random_card(cpu_cards)
 
-            # display final score
-            print("Your Hand: ")
-            display_score(players_cards)
-            print("\nDealer's Hand: ")
-            display_score(cpu_cards)
-
             player_score = players_cards["score"]
             cpu_score = cpu_cards["score"]
-            print()
-            if player_score <= 21:
-                if cpu_score > 21:
-                    print("You Win!")
-                    total_amount += bet
-                elif player_score > cpu_score:
-                    print("You Win!")
-                    total_amount += bet
-                elif cpu_score > player_score:
-                    print("Dealer Wins")
-                    total_amount -= bet
-                elif cpu_score == player_score:
-                    print("Draw!")
-
-            print(f"remaining pot: ${total_amount}")
-            reset_cards(players_cards, cpu_cards)
+            total_amount = calculate_score(player_score, cpu_score, total_amount, bet)
 
 
 def ask_hit_or_stand() -> bool:
@@ -187,6 +152,7 @@ def display_second_card_only(card_dictionary):
     print("\nDealer's Hand: ")
     second_card = card_dictionary["cards"][1].split()[0]
     score = card_scores[second_card]
+    print("Hidden")
     print(card_dictionary["cards"][1])
     print(f"Total score is {score}")
 
@@ -208,5 +174,52 @@ def reset_cards(players_deck, cpu_deck):
     cpu_deck["aces"] = 0
 
 
+def calculate_score(player_score: int, cpu_score: int, pot: int, bet: int, is_blackjack=False) -> int:
+    """
+    Calculates the score for blackjack and prints results
+    :param player_score: players score
+    :param cpu_score: dealers score
+    :param pot: total pot of player
+    :param bet: bet placed by player
+    :param is_blackjack: check if blackjack has been reached
+    :return: the adjusted pot after calculating who won
+    """
+
+    # display final score
+    print("\nYour Hand: ")
+    display_score(players_cards)
+    print("\nDealer's Hand: ")
+    display_score(cpu_cards)
+
+    if is_blackjack:
+        if player_score < cpu_score:
+            print("BLACKJACK! You Win!")
+            pot += 1.5 * bet
+        elif cpu_score < player_score:
+            print("\nDealer's Hand: ")
+            display_score(cpu_cards)
+            print("\nBLACKJACK! Dealer Wins!")
+            pot -= bet
+        elif player_score == cpu_score:
+            print("BLACKJACK Draw!")
+    else:
+        if player_score > 21:
+            print("BUST! Dealer Wins")
+            pot -= bet
+        if cpu_score > 21:
+            print("You Win!")
+            pot += bet
+        elif player_score > cpu_score:
+            print("You Win!")
+            pot += bet
+        elif cpu_score > player_score:
+            print("Dealer Wins")
+            pot -= bet
+        elif cpu_score == player_score:
+            print("Draw!")
+
+    reset_cards(players_cards, cpu_cards)
+    print(f"remaining pot: ${pot}")
+    return pot
 
 blackjack()
