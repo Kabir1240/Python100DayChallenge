@@ -134,6 +134,9 @@ def display_score(card_dictionary):
 
 
 def pick_random_card(card_dictionary):
+    #TODO remove option to pick suit entirely if all cards have been drawn
+    # end game if all cards are finished
+
     # choose the suit
     random_suit_idx = random.randrange(0, len(suits))
     random_suit = suits[random_suit_idx]
