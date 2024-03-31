@@ -1,5 +1,5 @@
 from ascii_art import higher_lower_logo as logo, vs
-from day_13_gamedata import data
+from day_14_gamedata import data
 import random
 import os
 
