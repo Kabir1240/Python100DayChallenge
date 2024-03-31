@@ -1,6 +1,7 @@
 import turtle
 from turtle import Turtle, Screen
 import random
+import colorgram
 
 
 class Draw:
@@ -54,6 +55,33 @@ class Draw:
             self.timmy.circle(radius)
             self.timmy.right(angle)
             self.random_color()
+        self.reset()
+
+    def draw_hirst_spot_painting(self, height=5, width=5, radius=25, space=50, turtle_speed=50, image="day_18_image.jpg"):
+        self.screen.colormode(255)
+        colors = colorgram.extract(image, 20)
+        self.timmy.speed(turtle_speed)
+
+        self.timmy.hideturtle()
+        self.timmy.pu()
+        self.timmy.goto(-200, -200)
+        # self.timmy.pd()
+
+        for _ in range(height):
+            for _ in range(width):
+                new_color = random.choice(colors).rgb
+                self.timmy.pencolor(new_color.r, new_color.g, new_color.b)
+                self.timmy.fillcolor(new_color.r, new_color.g, new_color.b)
+                # self.timmy.begin_fill()
+                self.timmy.dot(radius)
+                # self.timmy.end_fill()
+                # self.timmy.pu()
+                self.timmy.fd(space)
+                # self.timmy.pd()
+            # self.timmy.pu()
+            self.timmy.goto(-200, self.timmy.pos()[1] + space)
+            # self.timmy.pd()
+
 
     def random_color(self):
         color = "#" + ''.join([random.choice('0123456789ABCDEF') for j in range(6)])
@@ -68,9 +96,11 @@ class Draw:
 
 
 draw = Draw()
+# image="day_18_image.jpg"
 # draw.draw_square()
 # draw.draw_dashed()
 # draw.draw_shapes()
 # draw.draw_random_walk(length=100, line_size=20)
-draw.draw_spirograph(turtle_speed=50, angle=2)
+# draw.draw_spirograph(turtle_speed=50, angle=2)
+draw.draw_hirst_spot_painting()
 draw.done_drawing()
