@@ -11,26 +11,34 @@ MAX_SCORE = 10
 
 
 def pong_game():
+    """
+    Main Game logic for pong game using Turtle Graphics.
+    """
+
+    # create screen, board and 2 paddles
     screen = Screen()
     player_paddle = Paddle(PLAYER_PADDLE_STARTING_POSITION)
     cpu_paddle = Paddle(CPU_PADDLE_STARTING_POSITION)
     board = Board()
     ball = Ball()
 
+    # initialize screen
     screen = Screen()
     screen.setup(width=SCREEN_WIDTH, height=SCREEN_HEIGHT)
     screen.bgcolor("black")
     screen.title("Pong")
     screen.tracer(delay=0)
 
+    # allow user to move paddles up or down
     screen.listen()
     screen.onkeypress(key="Up", fun=player_paddle.move_up)
     screen.onkeypress(key="Down", fun=player_paddle.move_down)
 
+    # game loop
     cpu_paddle_move_up = True
     is_game_over = False
     while not is_game_over:
-        print(ball.heading())
+        # updates screen
         screen.update()
         time.sleep(ball.move_speed)
         ball.move()
@@ -52,7 +60,7 @@ def pong_game():
         if (ball.distance(cpu_paddle) < 50 and ball.xcor() >= 700) or (ball.distance(player_paddle) < 50 and ball.xcor() <= -700):
             ball.contact_paddle()
 
-        # cpu paddle AI
+        # cpu paddle AI. Moves all the way up and then all the way down.
         if cpu_paddle_move_up:
             if not cpu_paddle.move_up():
                 cpu_paddle_move_up = False

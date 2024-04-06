@@ -4,7 +4,14 @@ PADDLE_SPEED = 20
 
 
 class Paddle(Turtle):
+    """
+    Paddle class for Pong game.
+    """
     def __init__(self, position):
+        """
+        Initializes the paddle, sends it to the appropriate position.
+        :param position: Position to send the paddle.
+        """
         super().__init__()
         self.penup()
         self.color("white")
@@ -14,7 +21,11 @@ class Paddle(Turtle):
         self.shapesize(stretch_len=PADDLE_SIZE)
         self.goto(position)
 
-    def move_up(self):
+    def move_up(self) -> bool:
+        """
+        Moves paddle upward
+        :return: False if the paddle reaches the top of the screen. True otherwise, after moving the paddle.
+        """
         if self.ycor() >= 350:
             return False
         else:
@@ -22,7 +33,11 @@ class Paddle(Turtle):
             self.goto(self.xcor(), new_y)
             return True
 
-    def move_down(self):
+    def move_down(self) -> bool:
+        """
+        Moves paddle downward.
+        :return: False if the paddle reaches the bottom of the screen. True otherwise, after moving the paddle.
+        """
         if self.ycor() <= -350:
             return False
         else:

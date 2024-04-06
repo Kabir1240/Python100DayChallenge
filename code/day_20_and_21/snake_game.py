@@ -5,23 +5,32 @@ from scoreboard import Scoreboard
 import time
 
 
-def snake_game():
+def snake_game() -> None:
+    """
+    Main logic for the snake game using Turtle Graphics.
+    :return: None
+    """
+
+    # initializes the snake, food and scoreboard
     snake = Snake()
     food = Food()
     score = Scoreboard()
 
+    # initializes the screen
     screen = Screen()
     screen.setup(width=600, height=600)
     screen.bgcolor("black")
     screen.title("Snake")
     screen.tracer(0)
 
+    # listens for user inputs and makes the snake act accordingly
     screen.listen()
     screen.onkey(key="Up", fun=snake.up)
     screen.onkey(key="Down", fun=snake.down)
     screen.onkey(key="Left", fun=snake.left)
     screen.onkey(key="Right", fun=snake.right)
 
+    # main game loop
     game_is_on = True
     while game_is_on:
         screen.update()
@@ -46,6 +55,7 @@ def snake_game():
                 score.game_over()
                 game_is_on = False
 
+    # exit
     screen.exitonclick()
 
 
