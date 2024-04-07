@@ -2,7 +2,7 @@ import time
 from turtle import Screen
 from paddle import Paddle
 from ball import Ball
-from board import Board
+from gamemanager import GameManager
 PLAYER_PADDLE_STARTING_POSITION = (-720, 0)
 CPU_PADDLE_STARTING_POSITION = (720, 0)
 SCREEN_WIDTH = 1600
@@ -19,7 +19,8 @@ def pong_game():
     screen = Screen()
     player_paddle = Paddle(PLAYER_PADDLE_STARTING_POSITION)
     cpu_paddle = Paddle(CPU_PADDLE_STARTING_POSITION)
-    board = Board()
+
+    game_manager = GameManager()
     ball = Ball()
 
     # initialize screen
@@ -46,11 +47,11 @@ def pong_game():
         # if someone scores
         if ball.xcor() >= 750:
             ball.to_centre()
-            board.player_score_increase()
+            game_manager.player_score_increase()
 
         elif ball.xcor() <= -750:
             ball.to_centre()
-            board.cpu_score_increase()
+            game_manager.cpu_score_increase()
 
         # if ball touches ceiling or floor
         if ball.ycor() >= 385 or ball.ycor() <= -385:
@@ -69,7 +70,8 @@ def pong_game():
                 cpu_paddle_move_up = True
 
         # check if game is over / end game
-        if board.is_game_over():
+        if game_manager.is_game_over():
+            ball.hideturtle()
             break
 
     screen.exitonclick()
